@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portail Pédagogique - Gestion des Documents</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --accent: #2563eb;
+            --bg-color: #f8fafc;
+            --border-color: #cbd5e1;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 30px 15px;
+            color: #0f172a;
+        }
+        .main-container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--border-color);
+        }
+
+        /* En-tête principal avec dessins d'usine vectoriels (SVG) */
+        .main-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: #ffffff;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .main-header h1 {
+            margin: 0;
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: -0.025em;
+            text-align: center;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            flex: 1;
+            line-height: 1.4;
+            padding: 0 10px;
+        }
+
+        .factory-icon-svg {
+            width: 45px;
+            height: 45px;
+            fill: #ffffff;
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
+            flex-shrink: 0;
+        }
+
+        /* En-tête des sections */
+        .section-title {
+            font-weight: 700;
+            font-size: 14px;
+            margin: 25px 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #334155;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Grilles de dossiers */
+        .folders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .folder-card {
+            border: 1px solid;
+            padding: 18px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .folder-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.1);
+            filter: brightness(0.97);
+        }
+
+        .folder-icon {
+            font-size: 28px;
+        }
+
+        .folder-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Couleurs uniques et douces pour chaque dossier */
+        .card-prep { background: #fffbeb; border-color: #fcd34d; color: #92400e; }
+        .card-menuiserie { background: #fef3c7; border-color: #f59e0b; color: #b45309; }
+        .card-maconnerie { background: #ffedd5; border-color: #fb923c; color: #c2410c; }
+        .card-plomberie { background: #f0f9ff; border-color: #38bdf8; color: #0369a1; }
+        .card-electricite { background: #fef9c3; border-color: #facc15; color: #a16207; }
+        .card-finition { background: #fdf2f8; border-color: #f472b6; color: #be185d; }
+        .card-ere { background: #ecfdf5; border-color: #34d399; color: #047857; }
+
+        /* Bouton de création rapide */
+        .creation-bar {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 9px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-tp { background-color: #0d9488; }
+        .btn-tp:hover { background-color: #0f766e; }
+        .btn-prep { background-color: #d97706; }
+        .btn-prep:hover { background-color: #b45309; }
+
+        /* Section Recherche */
+        .search-section {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            margin-top: 30px;
+        }
+        .search-box {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        .search-input, .filter-select {
+            padding: 9px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+        }
+        .search-input { flex: 1; }
+        
+        /* Liste des documents */
+        .doc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .doc-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+        .doc-title { text-decoration: none; color: #0284c7; font-weight: 600; font-size: 13px; }
+        .doc-title:hover { text-decoration: underline; }
+        .tag {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .tag-prep { background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+        .tag-tp { background-color: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <!-- En-tête principal -->
+    <div class="main-header">
+        <svg class="factory-icon-svg" viewBox="0 0 24 24">
+            <path d="M2 22V7L7 10V7L12 10V4H14V6L19 4V9L22 7V22H2M4 20H20V9.5L19 10.2V7.6L14 9.6V6.6L12 7.4V11.8L7 9.8V12.4L4 11.4V20M6 14H8V16H6V14M10 14H12V16H10V14M14 14H16V16H14V14M18 14H20V16H18V14M6 18H8V20H6V18M10 18H12V20H10V18M14 18H16V20H14V18Z"/>
+        </svg>
+
+        <h1>ATELIERS DE LA SEGPA DU COLLEGE GERARD PHILIPE DE COGOLIN</h1>
+
+        <svg class="factory-icon-svg" viewBox="0 0 24 24">
+            <path d="M2 22V7L7 10V7L12 10V4H14V6L19 4V9L22 7V22H2M4 20H20V9.5L19 10.2V7.6L14 9.6V6.6L12 7.4V11.8L7 9.8V12.4L4 11.4V20M6 14H8V16H6V14M10 14H12V16H10V14M14 14H16V16H14V14M18 14H20V16H18V14M6 18H8V20H6V18M10 18H12V20H10V18M14 18H16V20H14V18Z"/>
+        </svg>
+    </div>
+
+    <!-- Accès rapides / Création -->
+    <div class="creation-bar">
+        <a href="tp/fabrication_tp.html" class="btn btn-tp">🛠️ Fabriquer un nouveau TP</a>
+        <a href="fiches_prep/creation_prep.html" class="btn btn-prep">📝 Créer une Fiche de Prep</a>
+    </div>
+
+    <!-- Section 1 : Dossier Fiches de Prep -->
+    <div class="section-title">📁 Espace Fiches de Préparation</div>
+    <div class="folders-grid">
+        <a href="fiches_prep/" class="folder-card card-prep">
+            <span class="folder-icon">📂</span>
+            <span class="folder-name">Fiches de Prep</span>
+            <span style="font-size: 11px; opacity: 0.8;">Consulter / Enregistrer</span>
+        </a>
+    </div>
+
+    <!-- Section 2 : Dossiers des TP par Matières -->
+    <div class="section-title">📂 Dossiers des Travaux Pratiques (TP) par Matières</div>
+    <div class="folders-grid">
+        <a href="tp/menuiserie/" class="folder-card card-menuiserie">
+            <span class="folder-icon">🪚</span>
+            <span class="folder-name">Menuiserie</span>
+        </a>
+        <a href="tp/maconnerie/" class="folder-card card-maconnerie">
+            <span class="folder-icon">🧱</span>
+            <span class="folder-name">Maçonnerie</span>
+        </a>
+        <a href="tp/plomberie/" class="folder-card card-plomberie">
+            <span class="folder-icon">🚰</span>
+            <span class="folder-name">Plomberie</span>
+        </a>
+        <a href="tp/electricite/" class="folder-card card-electricite">
+            <span class="folder-icon">⚡</span>
+            <span class="folder-name">Électricité</span>
+        </a>
+        <a href="tp/finition/" class="folder-card card-finition">
+            <span class="folder-icon">🖌️</span>
+            <span class="folder-name">Finition</span>
+        </a>
+        <a href="tp/ere/" class="folder-card card-ere">
+            <span class="folder-icon">🌳</span>
+            <span class="folder-name">ERE</span>
+        </a>
+    </div>
+
+	<li class="doc-item" data-type="tp" data-matiere="menuiserie">
+    		<a href="tp/menuiserie/TPM3.html" class="doc-title">TPM 3 - Mesurer et tracer sur une pièce</a>
+    		<span class="tag tag-tp">TP - Menuiserie</span>
+	</li>
+
+    <!-- Section 3 : Recherche globale de documents enregistrés -->
+    <div class="search-section">
+        <div class="section-title" style="margin-top: 0; border: none;">🔍 Rechercher un document enregistré</div>
+        <div class="search-box">
+            <input type="text" id="searchInput" class="search-input" onkeyup="filterDocs()" placeholder="Rechercher par titre, matière ou mot-clé...">
+            <select id="categoryFilter" class="filter-select" onchange="filterDocs()">
+                <option value="all">Tous les types</option>
+                <option value="prep">Fiches de Prep</option>
+                <option value="tp">Travaux Pratiques (TP)</option>
+            </select>
+        </div>
+
+        <ul class="doc-list" id="docList">
+            <!-- Exemples de documents enregistrés -->
+            <li class="doc-item" data-type="tp" data-matiere="menuiserie">
+                <a href="tp/menuiserie/TPM3_Mesurer_tracer.html" class="doc-title">TPM 3 - Mesurer et tracer sur une pièce</a>
+                <span class="tag tag-tp">TP - Menuiserie</span>
+            </li>
+            <li class="doc-item" data-type="prep" data-matiere="commune">
+                <a href="fiches_prep/Prep_Tracer_ebenisterie.html" class="doc-title">Fiche Prep - Traçage et débit du bois</a>
+                <span class="tag tag-prep">Fiche Prep</span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    function filterDocs() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const category = document.getElementById('categoryFilter').value;
+        const items = document.querySelectorAll('.doc-item');
+
+        items.forEach(item => {
+            const text = item.textContent.toLowerCase();
+            const type = item.getAttribute('data-type');
+            
+            const matchesText = text.includes(input);
+            const matchesCategory = (category === 'all') || (type === category);
+
+            if (matchesText && matchesCategory) {
+                item.style.display = "flex";
+            } else {
+                item.style.display = "none";
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
+```[cite: 1]

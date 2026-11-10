@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fiche de Déroulement Pédagogique</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+    :root {
+      --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      --header-gradient: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      --accent: #4f46e5;
+      --accent-soft: rgba(79, 70, 229, 0.1);
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --border: #cbd5e1;
+      --danger: #ef4444;
+      --shadow-md: 0 10px 30px -5px rgba(15, 23, 42, 0.08);
+      --radius-lg: 16px;
+      --radius-md: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 40px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+    }
+
+    /* En-tête principal */
+    .header-banner {
+      background: var(--header-gradient);
+      padding: 32px 40px;
+      border-radius: var(--radius-md);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.2);
+    }
+
+    .header-title-group h1 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      background: linear-gradient(to right, #ffffff, #cbd5e1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header-title-group p {
+      font-size: 13px;
+      color: #94a3b8;
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    /* Boutons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.25s ease;
+      font-family: inherit;
+    }
+
+    .btn-print {
+      background: #ffffff;
+      color: var(--text-main);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .btn-print:hover {
+      background: #f8fafc;
+      transform: translateY(-2px);
+    }
+
+    .btn-add {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 2px dashed #c7d2fe;
+      width: 100%;
+      justify-content: center;
+      padding: 14px;
+      margin-top: 24px;
+      border-radius: var(--radius-md);
+    }
+
+    .btn-add:hover {
+      background: #e0e7ff;
+      border-color: var(--accent);
+    }
+
+    .btn-delete {
+      background: transparent;
+      color: #94a3b8;
+      border: none;
+      padding: 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.2s;
+    }
+
+    .btn-delete:hover {
+      color: var(--danger);
+      background-color: #fef2f2;
+    }
+
+    /* Formulaire supérieur - Cases colorées d'en-tête */
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 18px;
+      margin-bottom: 32px;
+    }
+
+    .col-12 { grid-column: span 12; }
+    .col-3 { grid-column: span 3; }
+
+    .field-card {
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .card-obj-seq   { background-color: #f0fdf4; border-color: #bbf7d0; }
+    .card-support   { background-color: #eef2ff; border-color: #c7d2fe; }
+    .card-obj-seance{ background-color: #fffbeb; border-color: #fde68a; }
+    .card-classe    { background-color: #faf5ff; border-color: #e9d5ff; }
+    .card-duree     { background-color: #eff6ff; border-color: #bfdbfe; }
+    .card-periode   { background-color: #f0f9ff; border-color: #bae6fd; }
+    .card-date      { background-color: #fcf4ff; border-color: #f5d0fe; }
+
+    .field-card label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .card-obj-seq label    { color: #166534; }
+    .card-support label    { color: #3730a3; }
+    .card-obj-seance label { color: #92400e; }
+    .card-classe label     { color: #6b21a8; }
+    .card-duree label      { color: #1e40af; }
+    .card-periode label    { color: #075985; }
+    .card-date label       { color: #86198f; }
+
+    input[type="text"],
+    input[type="date"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 6px 0;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+      outline: none;
+    }
+
+    select {
+      cursor: pointer;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 40px;
+      line-height: 1.5;
+    }
+
+    /* Menu déroulant multi-sélection pour les supports */
+    .multiselect-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .select-box {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .checkboxes-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background-color: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      z-index: 100;
+      padding: 10px;
+      margin-top: 5px;
+    }
+
+    .checkboxes-dropdown label {
+      display: flex !important;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      color: var(--text-main) !important;
+      text-transform: none !important;
+      letter-spacing: normal !important;
+      padding: 6px 4px;
+      cursor: pointer;
+      margin-bottom: 0 !important;
+    }
+
+    .checkboxes-dropdown label:hover {
+      background-color: #f1f5f9;
+      border-radius: 4px;
+    }
+
+    .support-autre-input {
+      margin-top: 8px;
+      display: none;
+      background: #ffffff !important;
+      border: 1px solid var(--border) !important;
+      padding: 6px 10px !important;
+      border-radius: 6px !important;
+    }
+
+    /* Tableau avec code couleur par colonne */
+    .table-container {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 14px 10px;
+      color: #ffffff;
+      text-align: center;
+    }
+
+    th.th-duree-prevue { background-color: #3b82f6; }
+    th.th-duree-eff    { background-color: #0284c7; }
+    th.th-phases       { background-color: #8b5cf6; }
+    th.th-prof         { background-color: #0d9488; }
+    th.th-eleves       { background-color: #d97706; }
+    th.th-docs         { background-color: #4f46e5; }
+    th.th-connaissances{ background-color: #059669; }
+
+    td {
+      padding: 10px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    td.col-duree-prevue { background-color: #eff6ff; }
+    td.col-duree-eff    { background-color: #f0f9ff; }
+    td.col-phases       { background-color: #f5f3ff; }
+    td.col-prof         { background-color: #f0fdfa; }
+    td.col-eleves       { background-color: #fffbeb; }
+    td.col-docs         { background-color: #eef2ff; }
+    td.col-connaissances{ background-color: #ecfdf5; }
+
+    td input, td textarea, td select {
+      width: 100%;
+      background: #ffffff;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-main);
+      outline: none;
+    }
+
+    td input:focus, td textarea:focus, td select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+
+    td textarea {
+      resize: vertical;
+      min-height: 50px;
+    }
+
+    td select {
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .prof-other-input {
+      margin-top: 6px;
+      display: none;
+    }
+
+    /* Styles d'impression et PDF */
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+
+      .container {
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+        border: none;
+      }
+
+      .header-banner {
+        background: none !important;
+        color: black !important;
+        padding: 0 0 15px 0;
+        border-bottom: 2px solid #0f172a;
+        box-shadow: none;
+        margin-bottom: 15px;
+      }
+
+      .header-title-group h1 {
+        background: none;
+        -webkit-text-fill-color: #0f172a;
+        color: #0f172a;
+      }
+
+      .header-title-group p { color: #475569; }
+
+      .btn-print, .btn-add, .col-action, .checkboxes-dropdown {
+        display: none !important;
+      }
+
+      .select-box {
+        border: none !important;
+        padding: 0 !important;
+      }
+
+      .field-card, th, td {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      td input, td textarea, td select {
+        border: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+        appearance: none;
+        -webkit-appearance: none;
+      }
+
+      table, th, td {
+        border: 1px solid #94a3b8;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header class="header-banner">
+      <div class="header-title-group">
+        <h1>Fiche de Déroulement Pédagogique</h1>
+        <p>Document coloré et structuré pour le suivi des apprentissages</p>
+      </div>
+      <div>
+        <button class="btn btn-print" onclick="window.print()">
+          ✨ Imprimer / Enregistrer PDF
+        </button>
+      </div>
+    </header>
+
+    <!-- Informations d'en-tête avec cases colorées -->
+    <div class="meta-grid">
+      <div class="field-card card-obj-seq col-12">
+        <label>Objectif de la séquence (Activités de référence SEGPA)</label>
+        <select>
+          <option value="">-- Sélectionnez une activité de référence --</option>
+          
+          <!-- CHAMP PROFESSIONNEL : HABITAT -->
+          <optgroup label="🏠 HABITAT - Construction : Réalisation du clos et du couvert">
+            <option value="Hab_Paroi">Réaliser une paroi secondaire en briques creuses, béton cellulaire, blocs béton, etc.[cite: 2]</option>
+            <option value="Hab_Prefab">Fabriquer et installer un élément préfabriqué[cite: 2]</option>
+            <option value="Hab_Habillage">Réaliser un habillage décoratif en briques, pierres, etc.[cite: 2]</option>
+            <option value="Hab_Enduit">Réaliser un enduit monocouche[cite: 2]</option>
+            <option value="Hab_Pavage">Réaliser un pavage, un cheminement[cite: 2]</option>
+            <option value="Hab_OssatureBois">Installer une structure/ossature bois (Murs, planchers, terrasse, etc.)[cite: 2]</option>
+            <option value="Hab_Bardage">Réaliser un bardage extérieur bois (Étanchéité, isolation, revêtement, etc.)[cite: 2]</option>
+            <option value="Hab_FacadeVerre">Installer une structure de façade en profilés et verre (Façade rideau, véranda, etc.)[cite: 2]</option>
+            <option value="Hab_Charpente">Adapter et installer des ouvrages annexes de charpente : abris, auvent, balcons, etc.[cite: 2]</option>
+            <option value="Hab_Couverture">Poser des éléments de couverture par emboîtement, tuiles mécaniques, gouttières, etc.[cite: 2]</option>
+            <option value="Hab_MenuiserieExt">Installer une menuiserie extérieure[cite: 2]</option>
+            <option value="Hab_Fermeture">Installer une fermeture, volets, portails, etc.[cite: 2]</option>
+            <option value="Hab_Protection">Installer des équipements de protection (Rampes, grilles de défense, serrures, etc.)[cite: 2]</option>
+          </optgroup>
+
+          <optgroup label="🏠 HABITAT - Aménagement / Finition / Agencement">
+            <option value="Hab_Doublage">Réaliser une cloison de doublage[cite: 2]</option>
+            <option value="Hab_Distribution">Réaliser des cloisons de distribution (Plaques de plâtre, ossature bois, etc.)[cite: 2]</option>
+            <option value="Hab_MenuiserieInt">Installer une menuiserie intérieure[cite: 2]</option>
+            <option value="Hab_Isolation">Poser des produits d'isolation thermique et de correction acoustique[cite: 2]</option>
+            <option value="Hab_FauxPlafond">Installer un faux plafond en plaques, dalles, etc.[cite: 2]</option>
+            <option value="Hab_HabillageMural">Réaliser un habillage mural décoratif[cite: 2]</option>
+            <option value="Hab_Parquet">Poser un parquet ou revêtement de sol[cite: 2]</option>
+            <option value="Hab_Carrelage">Poser un revêtement en carrelage ou faïence, horizontal et/ou vertical[cite: 2]</option>
+            <option value="Hab_Moquette">Poser un revêtement de sol, moquette, etc.[cite: 2]</option>
+            <option value="Hab_AmenagementsInt">Réaliser des aménagements intérieurs (Placards, rangements, habillages, etc.)[cite: 2]</option>
+            <option value="Hab_Mobilier">Monter, Ajuster et Installer des mobiliers d'agencement[cite: 2]</option>
+            <option value="Hab_Decoratif">Ajuster et fixer des éléments décoratifs ou de liaison[cite: 2]</option>
+            <option value="Hab_RevetementsMuraux">Appliquer des revêtements muraux[cite: 2]</option>
+            <option value="Hab_Finitions">Appliquer des produits de finition et de protection[cite: 2]</option>
+          </optgroup>
+
+          <optgroup label="🏠 HABITAT - Équipements techniques">
+            <option value="Hab_Fluidique">Installer un réseau fluidique intérieur (Eau potable, eau usée, etc.)[cite: 2]</option>
+            <option value="Hab_SanitairePos">Poser et fixer un équipement sanitaire (Evier, lave main, baignoire, etc.)[cite: 2]</option>
+            <option value="Hab_SanitaireRacc">Équiper et raccorder un équipement sanitaire (Robinetterie, évacuation, accessoires, etc.)[cite: 2]</option>
+            <option value="Hab_CanalisationsExt">Installer un réseau de canalisations extérieures (Alimentation ou évacuation, etc.)[cite: 2]</option>
+            <option value="Hab_ElecInt">Installer un réseau électrique intérieur (Caché ou apparent, simple allumage ou va-et-vient...)[cite: 2]</option>
+            <option value="Hab_ElecApp">Poser et raccorder un appareillage électrique (Éclairage, alimentation, etc.)[cite: 2]</option>
+            <option value="Hab_Domotique">Installer un produit "domotique" (Store ou volet télécommandé, éclairage automatique, etc.)[cite: 2]</option>
+          </optgroup>
+
+          <!-- CHAMP PROFESSIONNEL : ESPACES RURAUX ET ENVIRONNEMENT (ERE) -->
+          <optgroup label="🌱 ERE - Production ornementale (florale et pépinière)">
+            <option value="ERE_MultiplierOrn">Multiplier les plantes (semer, diviser, bouturer)[cite: 4]</option>
+            <option value="ERE_MettreTerreOrn">Mettre en terre (repiquer, empoter, rempoter)[cite: 4]</option>
+            <option value="ERE_CultiverOrn">Cultiver et entretenir (arroser, fertiliser, distancer, tuteurer)[cite: 4]</option>
+            <option value="ERE_CommandesOrn">Préparer des commandes et stocker (choisir, préparer, ranger)[cite: 4]</option>
+            <option value="ERE_CompositionsOrn">Préparer des compositions florales (choisir, nettoyer, assembler)[cite: 4]</option>
+            <option value="ERE_VenteOrn">Participer à la vente (accueillir, conseiller, vendre)[cite: 4]</option>
+            <option value="ERE_StockerOrn">Stocker (réceptionner, vérifier, mettre en rayon)[cite: 4]</option>
+            <option value="ERE_EntretienOutillageOrn">Réaliser l'entretien de l'outillage[cite: 4]</option>
+            <option value="ERE_EntretienAbrisOrn">Réaliser l'entretien des abris de cultures[cite: 4]</option>
+          </optgroup>
+
+          <optgroup label="🌱 ERE - Production vivrière : légumière et fruitière">
+            <option value="ERE_MultiplierViv">Multiplier les plantes (semer)[cite: 4]</option>
+            <option value="ERE_MettreCultureViv">Mettre en culture (préparer le sol, repiquer, planter...)[cite: 4]</option>
+            <option value="ERE_CultiverViv">Cultiver et entretenir (arroser, tuteurer, ...)[cite: 4]</option>
+            <option value="ERE_TravauxHivernauxViv">Réaliser les travaux hivernaux : tailler, éliminer les déchets, attacher, planter[cite: 4]</option>
+            <option value="ERE_RecolterViv">Récolter (récolter, calibrer, choisir)[cite: 4]</option>
+            <option value="ERE_ConditionnerViv">Conditionner (calibrer, choisir, emballer)[cite: 4]</option>
+            <option value="ERE_TransformerViv">Transformer (fabriquer, conditionner)[cite: 4]</option>
+            <option value="ERE_MatérielViv">Entretenir outillage et matériel[cite: 4]</option>
+          </optgroup>
+
+          <optgroup label="🌱 ERE - Paysage et espaces verts">
+            <option value="ERE_CreerAmenagerPaysage">Créer et aménager un espace (préparer, terrasser, implanter, maçonneries paysagères, planter, semer)[cite: 4]</option>
+            <option value="ERE_EntretenirJardinPaysage">Entretenir un jardin, un domaine, un espace collectif (débroussailler, désherber, tondre, tailler)[cite: 4]</option>
+            <option value="ERE_GererDechetsPaysage">Gérer les déchets (trier, transformer, évacuer)[cite: 4]</option>
+            <option value="ERE_MatérielPaysage">Entretenir l'outillage et le matériel[cite: 4]</option>
+          </optgroup>
+
+          <optgroup label="🌱 ERE - Viticulture et agriculture">
+            <option value="ERE_TravauxHivernauxVigne">Réaliser les travaux hivernaux (tailler, éliminer les déchets, attacher, planter, repiquer)[cite: 4]</option>
+            <option value="ERE_TravauxVertVigne">Réaliser les travaux en vert (rogner, effeuiller, palisser)[cite: 4]</option>
+            <option value="ERE_EntretenirCulturesVigne">Entretenir les cultures et les supports (entretenir le sol, installer/remplacer piquets et fils)[cite: 4]</option>
+            <option value="ERE_ElaborerProduitVigne">Élaborer le produit (récolter, vendanger, vinifier, conditionner)[cite: 4]</option>
+            <option value="ERE_MatérielVigne">Entretenir l'outillage et le matériel[cite: 4]</option>
+          </optgroup>
+
+          <!-- CHAMP PROFESSIONNEL : VENTE, DISTRIBUTION ET LOGISTIQUE -->
+          <optgroup label="🛒 VENTE, DISTRIBUTION & LOGISTIQUE - Vente">
+            <option value="VDL_DemarcheVente">Mettre en œuvre une démarche de vente (accueil, besoins, argumentation, conclusion, documents)[cite: 5]</option>
+            <option value="VDL_Caisse">Encaisser et tenir la caisse[cite: 5]</option>
+            <option value="VDL_PromoVentes">Participer à la promotion des ventes[cite: 5]</option>
+          </optgroup>
+
+          <optgroup label="🛒 VENTE, DISTRIBUTION & LOGISTIQUE - Distribution">
+            <option value="VDL_ApproRayon">Approvisionner le rayon (transfert réserve/rayons, rangement, remplissage, stocks)[cite: 5]</option>
+            <option value="VDL_Etiquetage">Etiqueter les produits[cite: 5]</option>
+            <option value="VDL_Hygiene">Appliquer les règles d'hygiène et de conservation des produits[cite: 5]</option>
+            <option value="VDL_PropreteRayon">Maintenir le rayon en état de propreté[cite: 5]</option>
+            <option value="VDL_MiseEnValeur">Mettre en valeur les produits[cite: 5]</option>
+          </optgroup>
+
+          <optgroup label="🛒 VENTE, DISTRIBUTION & LOGISTIQUE - Logistique">
+            <option value="VDL_Inventaire">Réaliser l'inventaire[cite: 5]</option>
+            <option value="VDL_Reception">Réceptionner les marchandises[cite: 5]</option>
+            <option value="VDL_GestionStocks">Gérer les stocks[cite: 5]</option>
+            <option value="VDL_BonsCommandes">Passer des bons de commandes[cite: 5]</option>
+            <option value="VDL_ExpeditionCommandes">Traiter les commandes clients et les expédier[cite: 5]</option>
+            <option value="VDL_Entreposage">Entreposer les marchandises[cite: 5]</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <!-- Menu déroulant multi-sélection pour les supports pédagogiques -->
+      <div class="field-card card-support col-12">
+        <label>Support pédagogique</label>
+        <div class="multiselect-container">
+          <div class="select-box" onclick="toggleDropdown()">
+            <span id="select-label">-- Choisir un ou plusieurs supports --</span>
+            <span>▼</span>
+          </div>
+          <div class="checkboxes-dropdown" id="checkboxes-dropdown">
+            <label><input type="checkbox" value="Manuels" onchange="updateSupports()"> Manuels</label>
+            <label><input type="checkbox" value="Fiches de travail" onchange="updateSupports()"> Fiches de travail</label>
+            <label><input type="checkbox" value="TP" onchange="updateSupports()"> TP</label>
+            <label><input type="checkbox" value="Ressources numériques" onchange="updateSupports()"> Ressources numériques</label>
+            <label><input type="checkbox" value="Vidéo" onchange="updateSupports()"> Vidéo</label>
+            <label><input type="checkbox" value="Autre" id="chk-autre" onchange="updateSupports()"> Autre...</label>
+          </div>
+        </div>
+        <input type="text" id="support-autre-input" class="support-autre-input" placeholder="Préciser le support personnalisé...">
+      </div>
+
+      <div class="field-card card-obj-seance col-12">
+        <label>Objectif de la séance</label>
+        <textarea rows="2" placeholder="Définir l'objectif spécifique de cette séance..."></textarea>
+      </div>
+
+      <div class="field-card card-classe col-3">
+        <label>Classe / Groupe</label>
+        <input type="text" placeholder="ex: 3ème B">
+      </div>
+      <div class="field-card card-duree col-3">
+        <label>Durée totale</label>
+        <input type="text" placeholder="ex: 1h30">
+      </div>
+      
+      <!-- Menu déroulant pour les Trimestres -->
+      <div class="field-card card-periode col-3">
+        <label>Période</label>
+        <select>
+          <option value="">-- Sélectionner --</option>
+          <option value="Trimestre 1">Trimestre 1</option>
+          <option value="Trimestre 2">Trimestre 2</option>
+          <option value="Trimestre 3">Trimestre 3</option>
+        </select>
+      </div>
+      
+      <div class="field-card card-date col-3">
+        <label>Date</label>
+        <input type="date">
+      </div>
+    </div>
+
+    <!-- Tableau de déroulement -->
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th class="th-duree-prevue" style="width: 120px;">Durée prévue</th>
+            <th class="th-duree-eff" style="width: 90px;">Durée eff.</th>
+            <th class="th-phases" style="width: 120px;">Phases</th>
+            <th class="th-prof" style="width: 220px;">Activités du professeur</th>
+            <th class="th-eleves">Activités des élèves</th>
+            <th class="th-docs">Documents & Moyens</th>
+            <th class="th-connaissances">Connaissances</th>
+            <th class="col-action" style="width: 45px; background: #0f172a;"></th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+        </tbody>
+      </table>
+    </div>
+
+    <button class="btn btn-add" onclick="ajouterLigne()">
+      ➕ Ajouter une phase au déroulement
+    </button>
+  </div>
+
+  <script>
+    // Menu des durées (génère la liste d'options de 5 min à 180 min)
+    function genererOptionsDuree() {
+      let options = '<option value="">-- Durée --</option>';
+      options += '<option value="5 min">5 min</option>';
+      for (let i = 10; i <= 180; i += 10) {
+        let h = Math.floor(i / 60);
+        let m = i % 60;
+        let label = h > 0 ? `${h}h${m > 0 ? (m < 10 ? '0' + m : m) : ''}` : `${m} min`;
+        options += `<option value="${label}">${label}</option>`;
+      }
+      return options;
+    }
+
+    const optionsDureeHtml = genererOptionsDuree();
+
+    // Gestion du menu déroulant multi-sélection des supports
+    let dropdownOpen = false;
+    function toggleDropdown() {
+      const dropdown = document.getElementById('checkboxes-dropdown');
+      dropdownOpen = !dropdownOpen;
+      dropdown.style.display = dropdownOpen ? 'block' : 'none';
+    }
+
+    function updateSupports() {
+      const checkboxes = document.querySelectorAll('#checkboxes-dropdown input[type="checkbox"]');
+      const selected = [];
+      const chkAutre = document.getElementById('chk-autre');
+      const inputAutre = document.getElementById('support-autre-input');
+
+      checkboxes.forEach(cb => {
+        if (cb.checked && cb.value !== 'Autre') {
+          selected.push(cb.value);
+        }
+      });
+
+      if (chkAutre.checked) {
+        inputAutre.style.display = 'block';
+        if (inputAutre.value.trim() !== '') {
+          selected.push(inputAutre.value.trim());
+        } else {
+          selected.push('Autre');
+        }
+      } else {
+        inputAutre.style.display = 'none';
+        inputAutre.value = '';
+      }
+
+      const label = document.getElementById('select-label');
+      if (selected.length > 0) {
+        label.textContent = selected.join(', ');
+      } else {
+        label.textContent = '-- Choisir un ou plusieurs supports --';
+      }
+    }
+
+    document.getElementById('support-autre-input').addEventListener('input', updateSupports);
+
+    // Fermer le menu si on clique en dehors
+    document.addEventListener('click', function(e) {
+      const container = document.querySelector('.multiselect-container');
+      if (container && !container.contains(e.target)) {
+        document.getElementById('checkboxes-dropdown').style.display = 'none';
+        dropdownOpen = false;
+      }
+    });
+
+    function ajouterLigne() {
+      const tbody = document.getElementById('table-body');
+      const tr = document.createElement('tr');
+
+      tr.innerHTML = `
+        <td class="col-duree-prevue"><select class="select-duree">${optionsDureeHtml}</select></td>
+        <td class="col-duree-eff"><input type="text" placeholder="ex: 10m"></td>
+        <td class="col-phases"><input type="text" placeholder="ex: Lancement"></td>
+        <td class="col-prof">
+          <select onchange="gererProfOption(this)">
+            <option value="">-- Activité --</option>
+            <option value="Faire l'appel">Faire l'appel</option>
+            <option value="Surveillance">Surveillance</option>
+            <option value="Explications">Explications</option>
+            <option value="Donne les consignes de sécurité">Donne les consignes de sécurité</option>
+            <option value="Autre">Autre...</option>
+          </select>
+          <textarea class="prof-other-input" rows="2" placeholder="Préciser l'activité..."></textarea>
+        </td>
+        <td class="col-eleves"><textarea rows="2" placeholder="Travail des élèves..."></textarea></td>
+        <td class="col-docs"><textarea rows="2" placeholder="Supports, matériel..."></textarea></td>
+        <td class="col-connaissances"><textarea rows="2" placeholder="Notions visées..."></textarea></td>
+        <td class="col-action" style="text-align: center; background: #f8fafc;">
+          <button class="btn-delete" onclick="supprimerLigne(this)" title="Supprimer la ligne">🗑️</button>
+        </td>
+      `;
+
+      tbody.appendChild(tr);
+    }
+
+    function gererProfOption(selectElem) {
+      const tr = selectElem.closest('tr');
+      const dureeSelect = tr.querySelector('.select-duree');
+      const textarea = selectElem.parentElement.querySelector('.prof-other-input');
+
+      // Si "Faire l'appel" ou "Donne les consignes de sécurité" est sélectionné -> Durée = 5 min
+      if (selectElem.value === "Faire l'appel" || selectElem.value === "Donne les consignes de sécurité") {
+        dureeSelect.value = "5 min";
+      }
+
+      // Gestion de la zone de saisie pour "Autre"
+      if (selectElem.value === 'Autre') {
+        textarea.style.display = 'block';
+        textarea.focus();
+      } else {
+        textarea.style.display = 'none';
+        textarea.value = '';
+      }
+    }
+
+    function supprimerLigne(btn) {
+      btn.closest('tr').remove();
+    }
+
+    window.onload = function() {
+      for (let i = 0; i < 3; i++) {
+        ajouterLigne();
+      }
+    };
+  </script>
+</body>
+</html>
