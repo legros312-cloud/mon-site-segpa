@@ -147,7 +147,7 @@
             border-radius: 8px;
             border: 1px solid #e2e8f0;
             margin-top: 30px;
-            display: none; /* Caché par défaut au démarrage */
+            display: none;
         }
 
         .doc-list { list-style: none; padding: 0; margin: 0; }
@@ -164,17 +164,23 @@
         .doc-title { text-decoration: none; color: #0284c7; font-weight: 600; font-size: 13px; }
         .doc-title:hover { text-decoration: underline; }
         
-        .btn-edit {
-            font-size: 11px;
-            padding: 4px 10px;
+        .btn-action {
+            font-size: 12px;
+            padding: 6px 12px;
             border-radius: 6px;
-            background-color: #f1f5f9;
-            color: #334155;
-            border: 1px solid #cbd5e1;
             text-decoration: none;
             font-weight: 600;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s ease;
         }
-        .btn-edit:hover { background-color: #e2e8f0; }
+        .btn-open { background-color: #0284c7; color: white; }
+        .btn-open:hover { background-color: #0369a1; }
+        .btn-delete-file { background-color: #ef4444; color: white; }
+        .btn-delete-file:hover { background-color: #dc2626; }
     </style>
 </head>
 <body>
@@ -247,17 +253,21 @@
     const GITHUB_USER = "legros312-cloud";
     const GITHUB_REPO = "fiche-de-deroulement";
 
+    let currentDossierPath = "";
+    let currentNomDossier = "";
+
     async function chargerDossierGitHub(dossierPath, nomDossier) {
+        currentDossierPath = dossierPath;
+        currentNomDossier = nomDossier;
+
         const section = document.getElementById('explorerSection');
         const title = document.getElementById('explorerTitle');
         const listContainer = document.getElementById('docList');
 
-        // Afficher la section d'exploration et changer le titre
         section.style.display = "block";
         title.innerHTML = `📂 Contenu de : ${nomDossier}`;
         listContainer.innerHTML = "<li>Chargement des documents depuis GitHub...</li>";
 
-        // Faire défiler l'écran doucement vers la liste
         section.scrollIntoView({ behavior: 'smooth' });
 
         const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${dossierPath}`;
@@ -275,18 +285,16 @@
             files.forEach(file => {
                 if (file.name.endsWith('.html')) {
                     count++;
-                    // Lien pour ouvrir le fichier HTML sur votre site GitHub Pages
                     const viewUrl = `https://${GITHUB_USER}.github.io/${GITHUB_REPO}/${file.path}`;
-                    // Lien direct vers l'éditeur en ligne de GitHub pour modifier le fichier si besoin
-                    const editUrl = `https://github.com/${GITHUB_USER}/${GITHUB_REPO}/edit/main/${file.path}`;
 
                     const li = document.createElement('li');
                     li.className = "doc-item";
+                    li.id = `file-${file.sha}`;
                     li.innerHTML = `
                         <a href="${viewUrl}" target="_blank" class="doc-title">📄 ${file.name}</a>
                         <div style="display: flex; gap: 8px;">
-                            <a href="${viewUrl}" target="_blank" class="btn-edit" style="background-color: #0284c7; color: white;">👁️ Ouvrir</a>
-                            <a href="${editUrl}" target="_blank" class="btn-edit">✏️ Modifier</a>
+                            <a href="${viewUrl}" target="_blank" class="btn-action btn-open">👁️ Ouvrir</a>
+                            <button onclick="supprimerFichierGitHub('${file.path}', '${file.sha}', '${file.name}')" class="btn-action btn-delete-file">🗑️ Supprimer</button>
                         </div>
                     `;
                     listContainer.appendChild(li);
@@ -297,7 +305,53 @@
                 listContainer.innerHTML = "<li><em>Aucun fichier HTML n'a encore été créé dans ce dossier.</em></li>";
             }
         } catch (error) {
-            listContainer.innerHTML = `<li style="color: #dc2626;">❌ Erreur : ${error.message} (Assurez-vous que le dossier existe bien sur GitHub)</li>`;
+            listContainer.innerHTML = `<li style="color: #dc2626;">❌ Erreur : ${error.message}</li>`;
+        }
+    }
+
+    async function supprimerFichierGitHub(filePath, sha, fileName) {
+        const confirmation = confirm(`Êtes-vous sûr de vouloir supprimer définitivement le fichier :\n${fileName} ?`);
+        if (!confirmation) return;
+
+        let token = localStorage.getItem('github_pat');
+        if (!token) {
+            token = prompt("Veuillez entrer votre jeton d'accès GitHub (Personal Access Token) :");
+            if (token) {
+                localStorage.setItem('github_pat', token.trim());
+            } else {
+                alert("Suppression annulée : aucun jeton fourni.");
+                return;
+            }
+        }
+
+        const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${filePath}`;
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: `Suppression du fichier : ${fileName}`,
+                    sha: sha
+                })
+            });
+
+            if (response.ok) {
+                alert(`✅ Le fichier "${fileName}" a été supprimé de GitHub.`);
+                // Recharger la liste du dossier
+                chargerDossierGitHub(currentDossierPath, currentNomDossier);
+            } else {
+                const errData = await response.json();
+                alert(`❌ Impossible de supprimer (${response.status}) : ${errData.message}`);
+                if (response.status === 401) {
+                    localStorage.removeItem('github_pat');
+                }
+            }
+        } catch (err) {
+            alert("❌ Erreur de réseau ou de connexion à GitHub : " + err.message);
         }
     }
 </script>
