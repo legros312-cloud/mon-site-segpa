@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fiche TP Atelier - TPM 3</title>
+    <title>Fiche TP Atelier</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -64,8 +64,11 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            text-decoration: none;
         }
 
+        .btn-home { background-color: #3b82f6; }
+        .btn-home:hover { background-color: #2563eb; }
         .btn-print { background-color: #0284c7; }
         .btn-print:hover { background-color: #0369a1; }
         .btn-save { background-color: #16a34a; }
@@ -93,28 +96,19 @@
             font-size: 13px;
         }
 
-        .header-table tr:last-child td { border-bottom: none; }
-        .header-table td:last-child { border-right: none; }
-
         .tp-title {
             text-align: center;
             font-size: 17px;
             font-weight: 700;
             background: linear-gradient(135deg, #1e3a8a, #3b82f6);
             color: #ffffff;
-            letter-spacing: -0.025em;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 12px 20px;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
 
-        .trade-icon {
-            font-size: 28px;
-            line-height: 1;
-            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
-        }
+        .trade-icon { font-size: 28px; }
 
         label {
             font-weight: 700;
@@ -123,7 +117,6 @@
             display: block;
             margin-bottom: 4px;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
         }
 
         input[type="text"], input[type="date"], select, textarea {
@@ -131,28 +124,17 @@
             padding: 8px 10px;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
-            box-sizing: border-box;
             font-size: 14px;
             font-family: 'Inter', sans-serif;
             background: #ffffff;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
         }
 
         .section-box {
-            position: relative;
             margin-bottom: 20px;
             padding: 20px;
             border-radius: 10px;
             background: #ffffff;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            border-width: 1px;
-            border-style: solid;
+            border: 1px solid;
         }
 
         .box-material { border-color: #f59e0b; background: linear-gradient(to bottom, #fffbeb, #ffffff); }
@@ -165,111 +147,34 @@
             font-size: 14px;
             margin-bottom: 14px;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            padding-bottom: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .box-material .section-title { color: #b45309; border-bottom: 2px solid #fde68a; }
-        .box-objectives .section-title { color: #047857; border-bottom: 2px solid #a7f3d0; }
-        .box-results .section-title { color: #6d28d9; border-bottom: 2px solid #ddd6fe; }
-        .box-op .section-title { color: #0369a1; border-bottom: 2px solid #bae6fd; }
-
-        .equip-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 12px;
-        }
-
+        .equip-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
         .equip-item {
-            background: #fef3c7;
-            color: #92400e;
-            padding: 6px 12px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            border: 1px solid #fcd34d;
+            background: #fef3c7; color: #92400e; padding: 6px 12px;
+            border-radius: 20px; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; border: 1px solid #fcd34d;
         }
+        .equip-item .remove-tag { cursor: pointer; color: #b91c1c; font-weight: bold; }
 
-        .equip-item .remove-tag {
-            cursor: pointer;
-            color: #b91c1c;
-            font-weight: bold;
-            font-size: 14px;
+        .results-table, .op-table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #fff; }
+        .results-table th, .results-table td, .op-table th, .op-table td {
+            border: 1px solid #cbd5e1; padding: 8px 10px; font-size: 13px;
         }
-
-        .results-table, .op-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            background: #fff;
-            border-radius: 6px;
-            overflow: hidden;
-            border: 1px solid #cbd5e1;
-        }
-
-        .results-table th, .results-table td, 
-        .op-table th, .op-table td {
-            border: 1px solid #cbd5e1;
-            padding: 8px 10px;
-            vertical-align: middle;
-            font-size: 13px;
-        }
-
-        .results-table th { background-color: #ede9fe; color: #5b21b6; }
-        .op-table th { background-color: #e0f2fe; color: #0369a1; }
-
-        .results-table th, .op-table th {
-            text-align: center;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
+        .results-table th { background-color: #ede9fe; color: #5b21b6; text-align: center; }
+        .op-table th { background-color: #e0f2fe; color: #0369a1; text-align: center; }
 
         .red-note-input {
-            color: var(--accent-red);
-            font-weight: 700;
-            font-size: 15px;
-            text-align: center;
-            width: 80px !important;
-            background-color: #fef2f2 !important;
-            border: 1px solid #fca5a5 !important;
+            color: var(--accent-red); font-weight: 700; text-align: center; width: 80px !important; background-color: #fef2f2 !important;
         }
-
-        .img-preview {
-            max-width: 140px;
-            max-height: 100px;
-            object-fit: contain;
-            border: 1px solid #cbd5e1;
-            border-radius: 4px;
-            margin-top: 6px;
-            display: block;
-            background: #fff;
-        }
+        .img-preview { max-width: 140px; max-height: 100px; object-fit: contain; border: 1px solid #cbd5e1; margin-top: 6px; display: none; }
 
         @media print {
             body { background: white !important; padding: 0; }
-            .container { border: none; box-shadow: none; width: 100%; max-width: 100%; padding: 0; background: white !important; }
+            .container { border: none; box-shadow: none; width: 100%; max-width: 100%; padding: 0; }
             .actions-bar, .no-print { display: none !important; }
-            .section-box { border: 1px solid #94a3b8 !important; background: white !important; box-shadow: none !important; }
-            .tp-title { background: #1e3a8a !important; color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            input, select, textarea {
-                border: none !important;
-                background: transparent !important;
-                appearance: none;
-                -webkit-appearance: none;
-                resize: none;
-                padding: 2px !important;
-            }
-            .equip-item { border: 1px solid #ccc; background: #f8fafc !important; padding: 4px 8px; }
-            .equip-item .remove-tag { display: none; }
-            .equip-list { display: flex; flex-wrap: wrap; gap: 4px; }
         }
     </style>
 </head>
@@ -291,10 +196,7 @@
         </div>
 
         <div style="display: flex; gap: 10px; align-items: center;">
-            <label style="cursor: pointer; display: flex; align-items: center; gap: 6px; margin:0;">
-                <input type="checkbox" id="toggleOpMode" onchange="toggleOpSection(this)" checked style="width:auto;">
-                <strong>Mode opératoire</strong>
-            </label>
+            <a href="../index.html" class="btn btn-home">🏠 Menu Principal</a>
             <button class="btn btn-save" onclick="saveData()">💾 Enregistrer</button>
             <button class="btn btn-print" onclick="window.print()">🖨️ Imprimer</button>
         </div>
@@ -304,7 +206,7 @@
         <tr>
             <td style="width: 25%;">
                 <label>Numéro TP</label>
-                <input type="text" id="tpNumber" value="TPM 3" style="font-weight: bold; width: 80px;">
+                <input type="text" id="tpNumber" value="1" style="font-weight: bold; width: 80px;">
             </td>
             <td class="tp-title">
                 <span id="tradeIconLeft" class="trade-icon">🛠️</span>
@@ -329,63 +231,50 @@
         <tr>
             <td colspan="3">
                 <label>Titre / Sujet</label>
-                <input type="text" id="tpSubject" value="Mesurer et tracer sur une pièce">
+                <input type="text" id="tpSubject" value="Sciage">
             </td>
         </tr>
     </table>
 
     <div class="section-box box-material">
-        <div class="section-title">📦 Pour réaliser ce travail, vous aurez besoin de :</div>
-        
-        <div class="no-print" style="display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap;">
+        <div class="section-title">📦 Matériel nécessaire :</div>
+        <div class="no-print" style="display: flex; gap: 10px; margin-bottom: 10px;">
             <select id="equipSelect" onchange="checkOtherOption(this)" style="max-width: 250px;">
-                <option value="">-- Choisir un matériel --</option>
-                <option value="Mode opératoire">Mode opératoire</option>
-                <option value="Dessin de définition">Dessin de définition</option>
+                <option value="">-- Choisir --</option>
                 <option value="Équerre">Équerre</option>
                 <option value="Mètre">Mètre</option>
-                <option value="Réglet">Réglet</option>
-                <option value="Crayon">Crayon</option>
-                <option value="Gomme">Gomme</option>
-                <option value="Stylo mine">Stylo mine</option>
-                <option value="Ciseau à bois">Ciseau à bois</option>
                 <option value="Scie">Scie</option>
-                <option value="Gants">Gants</option>
-                <option value="EPI">EPI</option>
                 <option value="Autre">Autre...</option>
             </select>
-
-            <input type="text" id="otherEquipInput" placeholder="Préciser le matériel..." style="display: none; max-width: 200px;">
+            <input type="text" id="otherEquipInput" placeholder="Préciser..." style="display: none; max-width: 200px;">
             <button class="btn btn-add" onclick="addEquipment()">Ajouter</button>
         </div>
-
         <div class="equip-list" id="equipList"></div>
     </div>
 
     <div class="section-box box-objectives">
         <div class="section-title">🎯 Objectifs & Consignes</div>
-        <textarea rows="3" placeholder="Saisissez ici les objectifs et consignes pour les élèves..."></textarea>
+        <textarea rows="3" placeholder="Objectifs..."></textarea>
     </div>
 
     <div class="section-box box-results">
         <div class="section-title">
-            <span>⭐ Résultats attendus & Évaluation</span>
-            <button class="btn btn-add no-print" onclick="addResultRow()">+ Ajouter une ligne</button>
+            <span>⭐ Évaluation</span>
+            <button class="btn btn-add no-print" onclick="addResultRow()">+ Ligne</button>
         </div>
-
         <table class="results-table" id="resultsTable">
             <thead>
                 <tr>
-                    <th style="width: 65%;">Compétences / Critères d'évaluation</th>
-                    <th style="width: 20%;">Barème / Note</th>
+                    <th style="width: 65%;">Critères</th>
+                    <th style="width: 20%;">Note</th>
                     <th class="no-print" style="width: 15%;">Action</th>
                 </tr>
             </thead>
             <tbody id="resultsBody">
                 <tr>
-                    <td><input type="text" value="Respect des mesures indiquées sur le plan"></td>
+                    <td><input type="text" value="Respect des mesures"></td>
                     <td><input type="text" class="red-note-input" value="/ 5"></td>
-                    <td class="no-print" style="text-align: center;"><button class="btn btn-remove" onclick="removeRow(this)">X</button></td>
+                    <td class="no-print" style="text-align: center;"><button class="btn btn-remove" onclick="this.closest('tr').remove()">X</button></td>
                 </tr>
             </tbody>
         </table>
@@ -394,24 +283,17 @@
     <div class="section-box box-op" id="opModeSection">
         <div class="section-title">
             <span>🛠️ Mode Opératoire</span>
-            <button class="btn btn-add no-print" onclick="addOpRow()">+ Ajouter une phase</button>
+            <button class="btn btn-add no-print" onclick="addOpRow()">+ Phase</button>
         </div>
-
         <table class="op-table" id="opTable">
             <thead>
                 <tr>
                     <th style="width: 6%;">N°</th>
                     <th style="width: 18%;">Phases</th>
-                    <th style="width: 32%;">Opérations et croquis</th>
+                    <th style="width: 32%;">Opérations</th>
                     <th style="width: 16%;">Moyens</th>
-                    <th style="width: 20%;" colspan="2">Vérification</th>
+                    <th style="width: 20%;">Vérification</th>
                     <th class="no-print" style="width: 8%;">Action</th>
-                </tr>
-                <tr>
-                    <th colspan="4"></th>
-                    <th style="font-size: 10px;">Qualité</th>
-                    <th style="font-size: 10px;">Sécurité</th>
-                    <th class="no-print"></th>
                 </tr>
             </thead>
             <tbody id="opBody"></tbody>
@@ -431,21 +313,15 @@
             let mins = minutes % 60;
             let label = hours > 0 ? (mins > 0 ? `${hours}h${mins}` : `${hours}h00`) : `${mins} min`;
             let opt = document.createElement('option');
-            opt.value = label;
-            opt.innerText = label;
+            opt.value = label; opt.innerText = label;
             selectDuration.appendChild(opt);
         }
-
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('tpDate').value = today;
+        document.getElementById('tpDate').value = new Date().toISOString().split('T')[0];
         addOpRow();
     };
 
     function updateTradeVisuals(select) {
         const theme = select.value;
-        const iconLeft = document.getElementById('tradeIconLeft');
-        const iconRight = document.getElementById('tradeIconRight');
-        
         const icons = {
             'menuiserie': { left: '🪚', right: '🪓' },  
             'maconnerie': { left: '🧱', right: '⏳' },  
@@ -455,177 +331,129 @@
             'ere': { left: '🌳', right: '🌱' },        
             'none': { left: '🛠️', right: '🛠️' }
         };
-
-        const currentIcons = icons[theme] || icons['none'];
-        iconLeft.innerText = currentIcons.left;
-        iconRight.innerText = currentIcons.right;
-    }
-
-    function toggleOpSection(checkbox) {
-        const section = document.getElementById('opModeSection');
-        section.style.display = checkbox.checked ? 'block' : 'none';
+        const current = icons[theme] || icons['none'];
+        document.getElementById('tradeIconLeft').innerText = current.left;
+        document.getElementById('tradeIconRight').innerText = current.right;
     }
 
     function checkOtherOption(select) {
-        const otherInput = document.getElementById('otherEquipInput');
-        otherInput.style.display = (select.value === 'Autre') ? 'inline-block' : 'none';
-        if (select.value === 'Autre') otherInput.focus();
+        document.getElementById('otherEquipInput').style.display = (select.value === 'Autre') ? 'inline-block' : 'none';
     }
 
     function addEquipment() {
         const select = document.getElementById('equipSelect');
-        const otherInput = document.getElementById('otherEquipInput');
-        const equipList = document.getElementById('equipList');
-
-        let text = select.value === 'Autre' ? otherInput.value.trim() : select.value;
+        const other = document.getElementById('otherEquipInput');
+        let text = select.value === 'Autre' ? other.value.trim() : select.value;
         if (text) {
             const item = document.createElement('div');
             item.className = 'equip-item';
             item.innerHTML = `<span>${text}</span><span class="remove-tag" onclick="this.parentElement.remove()">×</span>`;
-            equipList.appendChild(item);
-            select.value = "";
-            otherInput.value = "";
-            otherInput.style.display = 'none';
+            document.getElementById('equipList').appendChild(item);
+            select.value = ""; other.value = ""; other.style.display = 'none';
         }
     }
 
     function addOpRow() {
         opCounter++;
-        const tbody = document.getElementById('opBody');
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td style="text-align: center; font-weight: bold;">${opCounter}</td>
             <td><input type="text" placeholder="Phase..."></td>
-            <td>
-                <textarea rows="2" placeholder="Opérations..."></textarea>
-                <div class="no-print" style="margin-top: 4px;">
-                    <input type="file" accept="image/*" style="font-size: 11px;" onchange="previewImage(event, 'img_op_${opCounter}')">
-                </div>
-                <img id="img_op_${opCounter}" class="img-preview" style="display: none;" alt="Croquis">
-            </td>
-            <td><textarea rows="2" placeholder="Moyens / Outillage..."></textarea></td>
-            <td><textarea rows="2" placeholder="Critères qualité..."></textarea></td>
-            <td><textarea rows="2" placeholder="Consignes sécurité..."></textarea></td>
-            <td class="no-print" style="text-align: center;"><button class="btn btn-remove" onclick="removeOpRow(this)">X</button></td>
+            <td><textarea rows="2" placeholder="Opérations..."></textarea></td>
+            <td><textarea rows="2" placeholder="Moyens..."></textarea></td>
+            <td><textarea rows="2" placeholder="Vérification..."></textarea></td>
+            <td class="no-print" style="text-align: center;"><button class="btn btn-remove" onclick="this.closest('tr').remove()">X</button></td>
         `;
-        tbody.appendChild(tr);
-    }
-
-    function removeOpRow(btn) { btn.closest('tr').remove(); }
-
-    function previewImage(event, targetId) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = document.getElementById(targetId);
-                img.src = e.target.result;
-                img.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        }
+        document.getElementById('opBody').appendChild(tr);
     }
 
     function addResultRow() {
-        const tbody = document.getElementById('resultsBody');
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td><input type="text" placeholder="Description du critère..."></td>
+            <td><input type="text" placeholder="Critère..."></td>
             <td><input type="text" class="red-note-input" value="/ 5"></td>
-            <td class="no-print" style="text-align: center;"><button class="btn btn-remove" onclick="removeRow(this)">X</button></td>
+            <td class="no-print" style="text-align: center;"><button class="btn btn-remove" onclick="this.closest('tr').remove()">X</button></td>
         `;
-        tbody.appendChild(tr);
+        document.getElementById('resultsBody').appendChild(tr);
     }
 
-    function removeRow(btn) { btn.closest('tr').remove(); }
-
     async function saveData() {
-        const tpNumber = document.getElementById('tpNumber').value.trim() || 'TP';
-        const theme = document.getElementById('atelierTheme').value;
+        const themeSelect = document.getElementById('atelierTheme');
+        const theme = themeSelect.value;
         
-        let folderPath = "tp/";
-        if (theme && theme !== "none") {
-            folderPath += theme + "/";
-        } else {
-            folderPath += "commune/";
+        if (theme === "none") {
+            alert("❌ Veuillez sélectionner un métier/matière avant d'enregistrer pour classer le TP dans le bon dossier.");
+            themeSelect.focus();
+            return;
         }
 
-        const cleanFileName = tpNumber.replace(/[^a-zA-Z0-9_-]/g, "_") + ".html";
-        const fullPath = folderPath + cleanFileName;
+        const tpNum = document.getElementById('tpNumber').value.trim() || '1';
+        const subject = document.getElementById('tpSubject').value.trim() || 'sans_titre';
+
+        const cleanNum = tpNum.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+        const cleanSubject = subject.toLowerCase()
+            .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+            .replace(/[^a-z0-9_-]/g, "_");
+
+        const fileName = `tp${cleanNum}-${theme}-${cleanSubject}.html`;
+        const folderPath = `tp/${theme}/`;
+        const fullPath = folderPath + fileName;
 
         const mode = confirm(
-            "Voulez-vous enregistrer le fichier directement sur GITHUB ?\n\n" +
-            "• OK : Publier directement sur GitHub\n" +
-            "• Annuler : Télécharger le fichier en local"
+            `Fichier généré : ${fileName}\nDossier de destination : ${folderPath}\n\n` +
+            "• OK : Enregistrer directement sur GITHUB\n" +
+            "• Annuler : Télécharger sur le PC"
         );
 
         if (!mode) {
             const blob = new Blob([document.documentElement.outerHTML], { type: 'text/html' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
-            a.download = cleanFileName;
+            a.download = fileName;
             a.click();
             return;
         }
 
         let token = localStorage.getItem('github_pat');
         if (!token) {
-            token = prompt("Veuillez entrer votre jeton d'accès GitHub (Personal Access Token) :");
-            if (token) {
-                localStorage.setItem('github_pat', token.trim());
-            } else {
-                alert("Enregistrement annulé : aucun jeton fourni.");
-                return;
-            }
+            token = prompt("Entrez votre jeton d'accès GitHub (Personal Access Token) :");
+            if (token) localStorage.setItem('github_pat', token.trim());
+            else { alert("Enregistrement annulé."); return; }
         }
 
         const htmlContent = document.documentElement.outerHTML;
-        const encoder = new TextEncoder();
-        const data = encoder.encode(htmlContent);
-        let binary = '';
-        for (let i = 0; i < data.byteLength; i++) {
-            binary += String.fromCharCode(data[i]);
-        }
-        const contentBase64 = btoa(binary);
-
+        const contentBase64 = btoa(unescape(encodeURIComponent(htmlContent)));
         const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${fullPath}`;
 
         try {
             let sha = null;
-            const getRes = await fetch(apiUrl, {
-                headers: { 'Authorization': `token ${token}` }
-            });
+            const getRes = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}` } });
             if (getRes.ok) {
                 const fileInfo = await getRes.json();
                 sha = fileInfo.sha;
             }
 
             const bodyData = {
-                message: `Ajout/Mise à jour du TP : ${cleanFileName} dans ${folderPath}`,
+                message: `Ajout du TP ${fileName} dans ${folderPath}`,
                 content: contentBase64
             };
             if (sha) bodyData.sha = sha;
 
             const putRes = await fetch(apiUrl, {
                 method: 'PUT',
-                headers: {
-                    'Authorization': `token ${token}`,
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify(bodyData)
             });
 
             if (putRes.ok) {
-                alert(`✅ Succès ! Le fichier a été enregistré sur GitHub dans :\n${fullPath}`);
+                alert(`✅ Succès ! Fichier enregistré sur GitHub dans :\n${fullPath}`);
             } else {
                 const errData = await putRes.json();
                 alert(`❌ Erreur GitHub (${putRes.status}) : ${errData.message}`);
-                if (putRes.status === 401) {
-                    localStorage.removeItem('github_pat');
-                }
+                if (putRes.status === 401) localStorage.removeItem('github_pat');
             }
         } catch (err) {
-            alert("❌ Erreur réseau ou de connexion à GitHub : " + err.message);
+            alert("❌ Erreur réseau : " + err.message);
         }
     }
 </script>

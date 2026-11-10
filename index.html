@@ -29,7 +29,6 @@
             border: 2px solid var(--border-color);
         }
 
-        /* En-tête principal avec dessins d'usine vectoriels (SVG) */
         .main-header {
             display: flex;
             align-items: center;
@@ -62,7 +61,6 @@
             flex-shrink: 0;
         }
 
-        /* En-tête des sections */
         .section-title {
             font-weight: 700;
             font-size: 14px;
@@ -77,7 +75,6 @@
             gap: 8px;
         }
 
-        /* Grilles de dossiers */
         .folders-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -105,16 +102,9 @@
             filter: brightness(0.97);
         }
 
-        .folder-icon {
-            font-size: 28px;
-        }
+        .folder-icon { font-size: 28px; }
+        .folder-name { font-weight: 600; font-size: 14px; }
 
-        .folder-name {
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        /* Couleurs uniques et douces pour chaque dossier */
         .card-prep { background: #fffbeb; border-color: #fcd34d; color: #92400e; }
         .card-menuiserie { background: #fef3c7; border-color: #f59e0b; color: #b45309; }
         .card-maconnerie { background: #ffedd5; border-color: #fb923c; color: #c2410c; }
@@ -123,7 +113,6 @@
         .card-finition { background: #fdf2f8; border-color: #f472b6; color: #be185d; }
         .card-ere { background: #ecfdf5; border-color: #34d399; color: #047857; }
 
-        /* Bouton de création rapide */
         .creation-bar {
             display: flex;
             gap: 10px;
@@ -150,7 +139,6 @@
         .btn-prep { background-color: #d97706; }
         .btn-prep:hover { background-color: #b45309; }
 
-        /* Section Recherche */
         .search-section {
             background: #f8fafc;
             padding: 20px;
@@ -173,12 +161,7 @@
         }
         .search-input { flex: 1; }
         
-        /* Liste des documents */
-        .doc-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
+        .doc-list { list-style: none; padding: 0; margin: 0; }
         .doc-item {
             display: flex;
             justify-content: space-between;
@@ -205,70 +188,60 @@
 <body>
 
 <div class="main-container">
-    <!-- En-tête principal -->
     <div class="main-header">
         <svg class="factory-icon-svg" viewBox="0 0 24 24">
             <path d="M2 22V7L7 10V7L12 10V4H14V6L19 4V9L22 7V22H2M4 20H20V9.5L19 10.2V7.6L14 9.6V6.6L12 7.4V11.8L7 9.8V12.4L4 11.4V20M6 14H8V16H6V14M10 14H12V16H10V14M14 14H16V16H14V14M18 14H20V16H18V14M6 18H8V20H6V18M10 18H12V20H10V18M14 18H16V20H14V18Z"/>
         </svg>
-
         <h1>ATELIERS DE LA SEGPA DU COLLEGE GERARD PHILIPE DE COGOLIN</h1>
-
         <svg class="factory-icon-svg" viewBox="0 0 24 24">
             <path d="M2 22V7L7 10V7L12 10V4H14V6L19 4V9L22 7V22H2M4 20H20V9.5L19 10.2V7.6L14 9.6V6.6L12 7.4V11.8L7 9.8V12.4L4 11.4V20M6 14H8V16H6V14M10 14H12V16H10V14M14 14H16V16H14V14M18 14H20V16H18V14M6 18H8V20H6V18M10 18H12V20H10V18M14 18H16V20H14V18Z"/>
         </svg>
     </div>
 
-    <!-- Accès rapides / Création -->
     <div class="creation-bar">
         <a href="tp/fabrication_tp.html" class="btn btn-tp">🛠️ Fabriquer un nouveau TP</a>
         <a href="fiches_prep/creation_prep.html" class="btn btn-prep">📝 Créer une Fiche de Prep</a>
     </div>
 
-    <!-- Section 1 : Dossier Fiches de Prep -->
+    <!-- Section 1 : Dossier Fiches de Prep (GitHub) -->
     <div class="section-title">📁 Espace Fiches de Préparation</div>
     <div class="folders-grid">
-        <a href="fiches_prep/" class="folder-card card-prep">
+        <a href="https://github.com/legros312-cloud/fiche-de-deroulement/tree/main/fiches_prep" target="_blank" class="folder-card card-prep">
             <span class="folder-icon">📂</span>
             <span class="folder-name">Fiches de Prep</span>
-            <span style="font-size: 11px; opacity: 0.8;">Consulter / Enregistrer</span>
+            <span style="font-size: 11px; opacity: 0.8;">Consulter sur GitHub</span>
         </a>
     </div>
 
-    <!-- Section 2 : Dossiers des TP par Matières -->
+    <!-- Section 2 : Dossiers des TP par Matières (GitHub) -->
     <div class="section-title">📂 Dossiers des Travaux Pratiques (TP) par Matières</div>
     <div class="folders-grid">
-        <a href="tp/menuiserie/" class="folder-card card-menuiserie">
+        <a href="https://github.com/legros312-cloud/fiche-de-deroulement/tree/main/tp/menuiserie" target="_blank" class="folder-card card-menuiserie">
             <span class="folder-icon">🪚</span>
             <span class="folder-name">Menuiserie</span>
         </a>
-        <a href="tp/maconnerie/" class="folder-card card-maconnerie">
+        <a href="https://github.com/legros312-cloud/fiche-de-deroulement/tree/main/tp/maconnerie" target="_blank" class="folder-card card-maconnerie">
             <span class="folder-icon">🧱</span>
             <span class="folder-name">Maçonnerie</span>
         </a>
-        <a href="tp/plomberie/" class="folder-card card-plomberie">
+        <a href="https://github.com/legros312-cloud/fiche-de-deroulement/tree/main/tp/plomberie" target="_blank" class="folder-card card-plomberie">
             <span class="folder-icon">🚰</span>
             <span class="folder-name">Plomberie</span>
         </a>
-        <a href="tp/electricite/" class="folder-card card-electricite">
+        <a href="https://github.com/legros312-cloud/fiche-de-deroulement/tree/main/tp/electricite" target="_blank" class="folder-card card-electricite">
             <span class="folder-icon">⚡</span>
             <span class="folder-name">Électricité</span>
         </a>
-        <a href="tp/finition/" class="folder-card card-finition">
+        <a href="https://github.com/legros312-cloud/fiche-de-deroulement/tree/main/tp/finition" target="_blank" class="folder-card card-finition">
             <span class="folder-icon">🖌️</span>
             <span class="folder-name">Finition</span>
         </a>
-        <a href="tp/ere/" class="folder-card card-ere">
+        <a href="https://github.com/legros312-cloud/fiche-de-deroulement/tree/main/tp/ere" target="_blank" class="folder-card card-ere">
             <span class="folder-icon">🌳</span>
             <span class="folder-name">ERE</span>
         </a>
     </div>
 
-	<li class="doc-item" data-type="tp" data-matiere="menuiserie">
-    		<a href="tp/menuiserie/TPM3.html" class="doc-title">TPM 3 - Mesurer et tracer sur une pièce</a>
-    		<span class="tag tag-tp">TP - Menuiserie</span>
-	</li>
-
-    <!-- Section 3 : Recherche globale de documents enregistrés -->
     <div class="search-section">
         <div class="section-title" style="margin-top: 0; border: none;">🔍 Rechercher un document enregistré</div>
         <div class="search-box">
@@ -281,9 +254,8 @@
         </div>
 
         <ul class="doc-list" id="docList">
-            <!-- Exemples de documents enregistrés -->
             <li class="doc-item" data-type="tp" data-matiere="menuiserie">
-                <a href="tp/menuiserie/TPM3_Mesurer_tracer.html" class="doc-title">TPM 3 - Mesurer et tracer sur une pièce</a>
+                <a href="tp/menuiserie/TPM3.html" class="doc-title">TPM 3 - Mesurer et tracer sur une pièce</a>
                 <span class="tag tag-tp">TP - Menuiserie</span>
             </li>
             <li class="doc-item" data-type="prep" data-matiere="commune">
@@ -303,19 +275,12 @@
         items.forEach(item => {
             const text = item.textContent.toLowerCase();
             const type = item.getAttribute('data-type');
-            
             const matchesText = text.includes(input);
             const matchesCategory = (category === 'all') || (type === category);
-
-            if (matchesText && matchesCategory) {
-                item.style.display = "flex";
-            } else {
-                item.style.display = "none";
-            }
+            item.style.display = (matchesText && matchesCategory) ? "flex" : "none";
         });
     }
 </script>
 
 </body>
 </html>
-```[cite: 1]
