@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fiche TP Atelier - TPM 3</title>
-    <!-- Police moderne et lisible -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -31,7 +30,6 @@
             border: 2px solid #cbd5e1;
         }
 
-        /* Barre d'actions supérieure */
         .actions-bar {
             display: flex;
             justify-content: space-between;
@@ -77,7 +75,6 @@
         .btn-remove { background-color: #ef4444; padding: 4px 10px; font-size: 12px; }
         .btn-remove:hover { background-color: #dc2626; }
 
-        /* En-tête du TP */
         .header-table {
             width: 100%;
             border-collapse: separate;
@@ -147,7 +144,6 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
         }
 
-        /* Rectangles colorés et gais pour chaque section */
         .section-box {
             position: relative;
             margin-bottom: 20px;
@@ -159,7 +155,6 @@
             border-style: solid;
         }
 
-        /* Couleurs thématiques distinctes et douces pour chaque bloc pour donner envie de lire */
         .box-material { border-color: #f59e0b; background: linear-gradient(to bottom, #fffbeb, #ffffff); }
         .box-objectives { border-color: #10b981; background: linear-gradient(to bottom, #ecfdf5, #ffffff); }
         .box-results { border-color: #8b5cf6; background: linear-gradient(to bottom, #f5f3ff, #ffffff); }
@@ -182,7 +177,6 @@
         .box-results .section-title { color: #6d28d9; border-bottom: 2px solid #ddd6fe; }
         .box-op .section-title { color: #0369a1; border-bottom: 2px solid #bae6fd; }
 
-        /* Matériel sous forme de badges colorés */
         .equip-list {
             display: flex;
             flex-wrap: wrap;
@@ -210,7 +204,6 @@
             font-size: 14px;
         }
 
-        /* Tableaux */
         .results-table, .op-table {
             width: 100%;
             border-collapse: collapse;
@@ -260,7 +253,6 @@
             background: #fff;
         }
 
-        /* Impression propre et contrastée */
         @media print {
             body { background: white !important; padding: 0; }
             .container { border: none; box-shadow: none; width: 100%; max-width: 100%; padding: 0; background: white !important; }
@@ -284,7 +276,6 @@
 <body>
 
 <div class="container" id="mainContainer">
-    <!-- Barre d'actions & Sélection du métier -->
     <div class="actions-bar no-print">
         <div class="theme-selector">
             <label for="atelierTheme" style="margin:0; display:inline;">Matière / Métier :</label>
@@ -309,7 +300,6 @@
         </div>
     </div>
 
-    <!-- En-tête TP -->
     <table class="header-table">
         <tr>
             <td style="width: 25%;">
@@ -344,7 +334,6 @@
         </tr>
     </table>
 
-    <!-- Section Matériel / Besoins -->
     <div class="section-box box-material">
         <div class="section-title">📦 Pour réaliser ce travail, vous aurez besoin de :</div>
         
@@ -373,13 +362,11 @@
         <div class="equip-list" id="equipList"></div>
     </div>
 
-    <!-- Section Consignes / Objectifs -->
     <div class="section-box box-objectives">
         <div class="section-title">🎯 Objectifs & Consignes</div>
         <textarea rows="3" placeholder="Saisissez ici les objectifs et consignes pour les élèves..."></textarea>
     </div>
 
-    <!-- Section Évaluation / Résultats attendus -->
     <div class="section-box box-results">
         <div class="section-title">
             <span>⭐ Résultats attendus & Évaluation</span>
@@ -404,7 +391,6 @@
         </table>
     </div>
 
-    <!-- Section MODE OPERATOIRE -->
     <div class="section-box box-op" id="opModeSection">
         <div class="section-title">
             <span>🛠️ Mode Opératoire</span>
@@ -428,18 +414,17 @@
                     <th class="no-print"></th>
                 </tr>
             </thead>
-            <tbody id="opBody">
-                <!-- Dynamique -->
-            </tbody>
+            <tbody id="opBody"></tbody>
         </table>
     </div>
 </div>
 
 <script>
     let opCounter = 0;
+    const GITHUB_USER = "legros312-cloud";
+    const GITHUB_REPO = "fiche-de-deroulement";
 
     window.onload = function() {
-        // Durées de 30 min à 8h00
         const selectDuration = document.getElementById('tpDuration');
         for (let minutes = 30; minutes <= 480; minutes += 30) {
             let hours = Math.floor(minutes / 60);
@@ -451,15 +436,11 @@
             selectDuration.appendChild(opt);
         }
 
-        // Date du jour par défaut
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('tpDate').value = today;
-
-        // Première ligne du mode opératoire
         addOpRow();
     };
 
-    // Attribution des icônes de chaque côté du titre selon le métier
     function updateTradeVisuals(select) {
         const theme = select.value;
         const iconLeft = document.getElementById('tradeIconLeft');
@@ -530,9 +511,7 @@
         tbody.appendChild(tr);
     }
 
-    function removeOpRow(btn) {
-        btn.closest('tr').remove();
-    }
+    function removeOpRow(btn) { btn.closest('tr').remove(); }
 
     function previewImage(event, targetId) {
         const file = event.target.files[0];
@@ -558,112 +537,96 @@
         tbody.appendChild(tr);
     }
 
-    function removeRow(btn) {
-        btn.closest('tr').remove();
-    }
+    function removeRow(btn) { btn.closest('tr').remove(); }
 
-    // Configuration du dépôt GitHub
-const GITHUB_USER = "legros312-cloud"; // Votre nom d'utilisateur GitHub ou l'organisation
-const GITHUB_REPO = "fiche-de-deroulement"; // Le nom de votre dépôt GitHub (ex: votre-depot)
-
-async function saveData() {
-    const tpNumber = document.getElementById('tpNumber').value.trim() || 'TP';
-    const theme = document.getElementById('atelierTheme').value;
-    
-    // Déterminer le dossier de destination selon la matière choisie
-    let folderPath = "tp/";
-    if (theme && theme !== "none") {
-        folderPath += theme + "/";
-    } else {
-        folderPath += "commune/";
-    }
-
-    // Nom du fichier nettoyé
-    const cleanFileName = tpNumber.replace(/[^a-zA-Z0-9_-]/g, "_") + ".html";
-    const fullPath = folderPath + cleanFileName;
-
-    // Choix du mode d'enregistrement
-    const mode = confirm(
-        "Voulez-vous enregistrer le fichier directement sur GITHUB ?\n\n" +
-        "• OK : Publier directement sur GitHub\n" +
-        "• Annuler : Télécharger le fichier en local"
-    );
-
-    if (!mode) {
-        // Enregistrement local classique
-        const blob = new Blob([document.documentElement.outerHTML], { type: 'text/html' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = cleanFileName;
-        a.click();
-        return;
-    }
-
-    // --- SAUVEGARDE DIRECTE SUR GITHUB ---
-    let token = localStorage.getItem('github_pat');
-    if (!token) {
-        token = prompt("Veuillez entrer votre jeton d'accès GitHub (Personal Access Token) :");
-        if (token) {
-            localStorage.setItem('github_pat', token.trim());
+    async function saveData() {
+        const tpNumber = document.getElementById('tpNumber').value.trim() || 'TP';
+        const theme = document.getElementById('atelierTheme').value;
+        
+        let folderPath = "tp/";
+        if (theme && theme !== "none") {
+            folderPath += theme + "/";
         } else {
-            alert("Enregistrement annulé : aucun jeton fourni.");
+            folderPath += "commune/";
+        }
+
+        const cleanFileName = tpNumber.replace(/[^a-zA-Z0-9_-]/g, "_") + ".html";
+        const fullPath = folderPath + cleanFileName;
+
+        const mode = confirm(
+            "Voulez-vous enregistrer le fichier directement sur GITHUB ?\n\n" +
+            "• OK : Publier directement sur GitHub\n" +
+            "• Annuler : Télécharger le fichier en local"
+        );
+
+        if (!mode) {
+            const blob = new Blob([document.documentElement.outerHTML], { type: 'text/html' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = cleanFileName;
+            a.click();
             return;
         }
-    }
 
-    // Encoder le contenu HTML complet de la page en UTF-8 / Base64
-    const htmlContent = document.documentElement.outerHTML;
-    const encoder = new TextEncoder();
-    const data = encoder.encode(htmlContent);
-    let binary = '';
-    for (let i = 0; i < data.byteLength; i++) {
-        binary += String.fromCharCode(data[i]);
-    }
-    const contentBase64 = btoa(binary);
-
-    const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${fullPath}`;
-
-    try {
-        // 1. Vérifier si le fichier existe déjà pour récupérer son SHA (nécessaire pour la mise à jour)
-        let sha = null;
-        const getRes = await fetch(apiUrl, {
-            headers: { 'Authorization': `token ${token}` }
-        });
-        if (getRes.ok) {
-            const fileInfo = await getRes.json();
-            sha = fileInfo.sha;
-        }
-
-        // 2. Envoyer le fichier sur GitHub
-        const bodyData = {
-            message: `Ajout/Mise à jour du TP : ${cleanFileName} dans ${folderPath}`,
-            content: contentBase64
-        };
-        if (sha) bodyData.sha = sha;
-
-        const putRes = await fetch(apiUrl, {
-            method: 'PUT',
-            headers: {
-                'Authorization': `token ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(bodyData)
-        });
-
-        if (putRes.ok) {
-            alert(`✅ Succès ! Le fichier a été enregistré sur GitHub dans :\n${fullPath}\n\nIl apparaîtra sur votre site dans quelques instants.`);
-        } else {
-            const errData = await putRes.json();
-            alert(`❌ Erreur GitHub (${putRes.status}) : ${errData.message}`);
-            if (putRes.status === 401) {
-                // Si le token est invalide, on le réinitialise
-                localStorage.removeItem('github_pat');
+        let token = localStorage.getItem('github_pat');
+        if (!token) {
+            token = prompt("Veuillez entrer votre jeton d'accès GitHub (Personal Access Token) :");
+            if (token) {
+                localStorage.setItem('github_pat', token.trim());
+            } else {
+                alert("Enregistrement annulé : aucun jeton fourni.");
+                return;
             }
         }
-    } catch (err) {
-        alert("❌ Erreur réseau ou de connexion à GitHub : " + err.message);
-    }
-}
+
+        const htmlContent = document.documentElement.outerHTML;
+        const encoder = new TextEncoder();
+        const data = encoder.encode(htmlContent);
+        let binary = '';
+        for (let i = 0; i < data.byteLength; i++) {
+            binary += String.fromCharCode(data[i]);
+        }
+        const contentBase64 = btoa(binary);
+
+        const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${fullPath}`;
+
+        try {
+            let sha = null;
+            const getRes = await fetch(apiUrl, {
+                headers: { 'Authorization': `token ${token}` }
+            });
+            if (getRes.ok) {
+                const fileInfo = await getRes.json();
+                sha = fileInfo.sha;
+            }
+
+            const bodyData = {
+                message: `Ajout/Mise à jour du TP : ${cleanFileName} dans ${folderPath}`,
+                content: contentBase64
+            };
+            if (sha) bodyData.sha = sha;
+
+            const putRes = await fetch(apiUrl, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(bodyData)
+            });
+
+            if (putRes.ok) {
+                alert(`✅ Succès ! Le fichier a été enregistré sur GitHub dans :\n${fullPath}`);
+            } else {
+                const errData = await putRes.json();
+                alert(`❌ Erreur GitHub (${putRes.status}) : ${errData.message}`);
+                if (putRes.status === 401) {
+                    localStorage.removeItem('github_pat');
+                }
+            }
+        } catch (err) {
+            alert("❌ Erreur réseau ou de connexion à GitHub : " + err.message);
+        }
     }
 </script>
 
