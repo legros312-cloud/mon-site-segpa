@@ -94,6 +94,7 @@
             flex-direction: column;
             align-items: center;
             gap: 8px;
+            cursor: pointer;
         }
 
         .folder-card:hover {
@@ -139,28 +140,16 @@
         .btn-prep { background-color: #d97706; }
         .btn-prep:hover { background-color: #b45309; }
 
-        .search-section {
+        /* Section Explorateur de dossier dynamique */
+        .explorer-section {
             background: #f8fafc;
             padding: 20px;
             border-radius: 8px;
             border: 1px solid #e2e8f0;
             margin-top: 30px;
+            display: none; /* Caché par défaut au démarrage */
         }
-        .search-box {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-        .search-input, .filter-select {
-            padding: 9px 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            font-size: 14px;
-            font-family: 'Inter', sans-serif;
-            background: #ffffff;
-        }
-        .search-input { flex: 1; }
-        
+
         .doc-list { list-style: none; padding: 0; margin: 0; }
         .doc-item {
             display: flex;
@@ -174,15 +163,18 @@
         }
         .doc-title { text-decoration: none; color: #0284c7; font-weight: 600; font-size: 13px; }
         .doc-title:hover { text-decoration: underline; }
-        .tag {
+        
+        .btn-edit {
             font-size: 11px;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background-color: #f1f5f9;
+            color: #334155;
+            border: 1px solid #cbd5e1;
+            text-decoration: none;
+            font-weight: 600;
         }
-        .tag-prep { background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
-        .tag-tp { background-color: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+        .btn-edit:hover { background-color: #e2e8f0; }
     </style>
 </head>
 <body>
@@ -203,82 +195,110 @@
         <a href="fiches_prep/creation_prep.html" class="btn btn-prep">📝 Créer une Fiche de Prep</a>
     </div>
 
-    <!-- Section 1 : Dossier Fiches de Prep (GitHub) -->
+    <!-- Section 1 : Dossier Fiches de Prep -->
     <div class="section-title">📁 Espace Fiches de Préparation</div>
     <div class="folders-grid">
-        <a href="https://github.com/legros312-cloud/fiche-de-deroulement/tree/main/fiches_prep" target="_blank" class="folder-card card-prep">
+        <div onclick="chargerDossierGitHub('fiches_prep', 'Fiches de Préparation')" class="folder-card card-prep">
             <span class="folder-icon">📂</span>
             <span class="folder-name">Fiches de Prep</span>
-            <span style="font-size: 11px; opacity: 0.8;">Consulter sur GitHub</span>
-        </a>
+            <span style="font-size: 11px; opacity: 0.8;">Cliquer pour lister</span>
+        </div>
     </div>
 
-    <!-- Section 2 : Dossiers des TP par Matières (GitHub) -->
+    <!-- Section 2 : Dossiers des TP par Matières -->
     <div class="section-title">📂 Dossiers des Travaux Pratiques (TP) par Matières</div>
     <div class="folders-grid">
-        <a href="https://github.com/legros312-cloud/fiche-de-deroulement/tree/main/tp/menuiserie" target="_blank" class="folder-card card-menuiserie">
+        <div onclick="chargerDossierGitHub('tp/menuiserie', 'TP - Menuiserie')" class="folder-card card-menuiserie">
             <span class="folder-icon">🪚</span>
             <span class="folder-name">Menuiserie</span>
-        </a>
-        <a href="https://github.com/legros312-cloud/fiche-de-deroulement/tree/main/tp/maconnerie" target="_blank" class="folder-card card-maconnerie">
+        </div>
+        <div onclick="chargerDossierGitHub('tp/maconnerie', 'TP - Maçonnerie')" class="folder-card card-maconnerie">
             <span class="folder-icon">🧱</span>
             <span class="folder-name">Maçonnerie</span>
-        </a>
-        <a href="https://github.com/legros312-cloud/fiche-de-deroulement/tree/main/tp/plomberie" target="_blank" class="folder-card card-plomberie">
+        </div>
+        <div onclick="chargerDossierGitHub('tp/plomberie', 'TP - Plomberie')" class="folder-card card-plomberie">
             <span class="folder-icon">🚰</span>
             <span class="folder-name">Plomberie</span>
-        </a>
-        <a href="https://github.com/legros312-cloud/fiche-de-deroulement/tree/main/tp/electricite" target="_blank" class="folder-card card-electricite">
+        </div>
+        <div onclick="chargerDossierGitHub('tp/electricite', 'TP - Électricité')" class="folder-card card-electricite">
             <span class="folder-icon">⚡</span>
             <span class="folder-name">Électricité</span>
-        </a>
-        <a href="https://github.com/legros312-cloud/fiche-de-deroulement/tree/main/tp/finition" target="_blank" class="folder-card card-finition">
+        </div>
+        <div onclick="chargerDossierGitHub('tp/finition', 'TP - Finition')" class="folder-card card-finition">
             <span class="folder-icon">🖌️</span>
             <span class="folder-name">Finition</span>
-        </a>
-        <a href="https://github.com/legros312-cloud/fiche-de-deroulement/tree/main/tp/ere" target="_blank" class="folder-card card-ere">
+        </div>
+        <div onclick="chargerDossierGitHub('tp/ere', 'TP - ERE')" class="folder-card card-ere">
             <span class="folder-icon">🌳</span>
             <span class="folder-name">ERE</span>
-        </a>
+        </div>
     </div>
 
-    <div class="search-section">
-        <div class="section-title" style="margin-top: 0; border: none;">🔍 Rechercher un document enregistré</div>
-        <div class="search-box">
-            <input type="text" id="searchInput" class="search-input" onkeyup="filterDocs()" placeholder="Rechercher par titre, matière ou mot-clé...">
-            <select id="categoryFilter" class="filter-select" onchange="filterDocs()">
-                <option value="all">Tous les types</option>
-                <option value="prep">Fiches de Prep</option>
-                <option value="tp">Travaux Pratiques (TP)</option>
-            </select>
-        </div>
-
+    <!-- Section Explorateur Dynamique -->
+    <div id="explorerSection" class="explorer-section">
+        <div class="section-title" id="explorerTitle" style="margin-top: 0;">📂 Contenu du dossier</div>
         <ul class="doc-list" id="docList">
-            <li class="doc-item" data-type="tp" data-matiere="menuiserie">
-                <a href="tp/menuiserie/TPM3.html" class="doc-title">TPM 3 - Mesurer et tracer sur une pièce</a>
-                <span class="tag tag-tp">TP - Menuiserie</span>
-            </li>
-            <li class="doc-item" data-type="prep" data-matiere="commune">
-                <a href="fiches_prep/Prep_Tracer_ebenisterie.html" class="doc-title">Fiche Prep - Traçage et débit du bois</a>
-                <span class="tag tag-prep">Fiche Prep</span>
-            </li>
+            <li>Chargement...</li>
         </ul>
     </div>
 </div>
 
 <script>
-    function filterDocs() {
-        const input = document.getElementById('searchInput').value.toLowerCase();
-        const category = document.getElementById('categoryFilter').value;
-        const items = document.querySelectorAll('.doc-item');
+    const GITHUB_USER = "legros312-cloud";
+    const GITHUB_REPO = "fiche-de-deroulement";
 
-        items.forEach(item => {
-            const text = item.textContent.toLowerCase();
-            const type = item.getAttribute('data-type');
-            const matchesText = text.includes(input);
-            const matchesCategory = (category === 'all') || (type === category);
-            item.style.display = (matchesText && matchesCategory) ? "flex" : "none";
-        });
+    async function chargerDossierGitHub(dossierPath, nomDossier) {
+        const section = document.getElementById('explorerSection');
+        const title = document.getElementById('explorerTitle');
+        const listContainer = document.getElementById('docList');
+
+        // Afficher la section d'exploration et changer le titre
+        section.style.display = "block";
+        title.innerHTML = `📂 Contenu de : ${nomDossier}`;
+        listContainer.innerHTML = "<li>Chargement des documents depuis GitHub...</li>";
+
+        // Faire défiler l'écran doucement vers la liste
+        section.scrollIntoView({ behavior: 'smooth' });
+
+        const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${dossierPath}`;
+
+        try {
+            const response = await fetch(apiUrl);
+            if (!response.ok) {
+                throw new Error("Dossier vide ou introuvable sur GitHub.");
+            }
+
+            const files = await response.json();
+            listContainer.innerHTML = "";
+
+            let count = 0;
+            files.forEach(file => {
+                if (file.name.endsWith('.html')) {
+                    count++;
+                    // Lien pour ouvrir le fichier HTML sur votre site GitHub Pages
+                    const viewUrl = `https://${GITHUB_USER}.github.io/${GITHUB_REPO}/${file.path}`;
+                    // Lien direct vers l'éditeur en ligne de GitHub pour modifier le fichier si besoin
+                    const editUrl = `https://github.com/${GITHUB_USER}/${GITHUB_REPO}/edit/main/${file.path}`;
+
+                    const li = document.createElement('li');
+                    li.className = "doc-item";
+                    li.innerHTML = `
+                        <a href="${viewUrl}" target="_blank" class="doc-title">📄 ${file.name}</a>
+                        <div style="display: flex; gap: 8px;">
+                            <a href="${viewUrl}" target="_blank" class="btn-edit" style="background-color: #0284c7; color: white;">👁️ Ouvrir</a>
+                            <a href="${editUrl}" target="_blank" class="btn-edit">✏️ Modifier</a>
+                        </div>
+                    `;
+                    listContainer.appendChild(li);
+                }
+            });
+
+            if (count === 0) {
+                listContainer.innerHTML = "<li><em>Aucun fichier HTML n'a encore été créé dans ce dossier.</em></li>";
+            }
+        } catch (error) {
+            listContainer.innerHTML = `<li style="color: #dc2626;">❌ Erreur : ${error.message} (Assurez-vous que le dossier existe bien sur GitHub)</li>`;
+        }
     }
 </script>
 
