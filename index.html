@@ -192,7 +192,7 @@
         </svg>
         <h1>ATELIERS DE LA SEGPA DU COLLEGE GERARD PHILIPE DE COGOLIN</h1>
         <svg class="factory-icon-svg" viewBox="0 0 24 24">
-            <path d="M2 22V7L7 10V7L12 10V4H14V6L19 4V9L22 7V22H2M4 20H20V9.5L19 10.2V7.6L14 9.6V6.6L12 7.4V11.8L7 9.8V12.4L4 11.4V20M6 14H8V16H6V14M10 14H12V16H10V14M14 14H16V16H14V14M18 14H20V16H18V14M6 18H8V20H6V18M10 18H12V20H10V18M14 18H16V20H14V18Z"/>
+            <path d="M2 22V7L7 10V7L12 10V4H14V6L19 4V9L22 7V22H2M4 20H20V9.5L19 10.2V7.6L14 9.6V6.6L12 7.4V11.8L7 9.8V12.4L4 11.4V20M6 14H8V16H6V14M10 14H12V16H10V14M14 14H16V16H14V14M18 14H20V16H18V14M6 18H8V20H6V18M10 18H12V20H10V18M14 18H16V20H14V14M18 14H20V16H18V14Z"/>
         </svg>
     </div>
 
@@ -240,9 +240,22 @@
         </div>
     </div>
 
-    <!-- Section Explorateur Dynamique -->
+    <!-- Section Explorateur Dynamique avec Upload -->
     <div id="explorerSection" class="explorer-section">
         <div class="section-title" id="explorerTitle" style="margin-top: 0;">📂 Contenu du dossier</div>
+        
+        <!-- Bloc d'importation direct -->
+        <div style="background: #ffffff; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px dashed #cbd5e1; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+            <div>
+                <strong>📥 Ajouter un document dans ce dossier :</strong>
+                <p style="font-size: 12px; color: #64748b; margin: 2px 0 0 0;">Sélectionnez un fichier Word (.docx), PDF ou HTML depuis votre appareil.</p>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <input type="file" id="fileUploadInput" accept=".html,.pdf,.docx" style="font-size: 13px;">
+                <button onclick="uploaderFichierDirectSite()" class="btn-action btn-open" style="background-color: #16a34a; padding: 8px 14px;">🚀 Envoyer</button>
+            </div>
+        </div>
+
         <ul class="doc-list" id="docList">
             <li>Chargement...</li>
         </ul>
@@ -275,7 +288,11 @@
         try {
             const response = await fetch(apiUrl);
             if (!response.ok) {
-                throw new Error("Dossier vide ou introuvable sur GitHub.");
+                if (response.status === 404) {
+                    listContainer.innerHTML = "<li><em>Ce dossier est vide ou n'a pas encore été créé sur GitHub. Vous pouvez y envoyer votre premier fichier.</em></li>";
+                    return;
+                }
+                throw new Error("Dossier introuvable sur GitHub.");
             }
 
             const files = await response.json();
@@ -283,15 +300,19 @@
 
             let count = 0;
             files.forEach(file => {
-                if (file.name.endsWith('.html')) {
+                if (file.name.endsWith('.html') || file.name.endsWith('.pdf') || file.name.endsWith('.docx')) {
                     count++;
                     const viewUrl = `https://${GITHUB_USER}.github.io/${GITHUB_REPO}/${file.path}`;
+
+                    let icone = "📄";
+                    if (file.name.endsWith('.pdf')) icone = "📕";
+                    if (file.name.endsWith('.docx')) icone = "📘";
 
                     const li = document.createElement('li');
                     li.className = "doc-item";
                     li.id = `file-${file.sha}`;
                     li.innerHTML = `
-                        <a href="${viewUrl}" target="_blank" class="doc-title">📄 ${file.name}</a>
+                        <a href="${viewUrl}" target="_blank" class="doc-title">${icone} ${file.name}</a>
                         <div style="display: flex; gap: 8px;">
                             <a href="${viewUrl}" target="_blank" class="btn-action btn-open">👁️ Ouvrir</a>
                             <button onclick="supprimerFichierGitHub('${file.path}', '${file.sha}', '${file.name}')" class="btn-action btn-delete-file">🗑️ Supprimer</button>
@@ -302,7 +323,7 @@
             });
 
             if (count === 0) {
-                listContainer.innerHTML = "<li><em>Aucun fichier HTML n'a encore été créé dans ce dossier.</em></li>";
+                listContainer.innerHTML = "<li><em>Aucun fichier compatible (HTML, PDF, Word) trouvé dans ce dossier.</em></li>";
             }
         } catch (error) {
             listContainer.innerHTML = `<li style="color: #dc2626;">❌ Erreur : ${error.message}</li>`;
@@ -341,18 +362,87 @@
 
             if (response.ok) {
                 alert(`✅ Le fichier "${fileName}" a été supprimé de GitHub.`);
-                // Recharger la liste du dossier
                 chargerDossierGitHub(currentDossierPath, currentNomDossier);
             } else {
                 const errData = await response.json();
                 alert(`❌ Impossible de supprimer (${response.status}) : ${errData.message}`);
-                if (response.status === 401) {
-                    localStorage.removeItem('github_pat');
-                }
+                if (response.status === 401) localStorage.removeItem('github_pat');
             }
         } catch (err) {
             alert("❌ Erreur de réseau ou de connexion à GitHub : " + err.message);
         }
+    }
+
+    async function uploaderFichierDirectSite() {
+        const fileInput = document.getElementById('fileUploadInput');
+        if (fileInput.files.length === 0) {
+            alert("❌ Veuillez d'abord sélectionner un fichier à envoyer.");
+            return;
+        }
+
+        if (!currentDossierPath) {
+            alert("❌ Veuillez d'abord cliquer sur un dossier de matière avant d'envoyer un fichier.");
+            return;
+        }
+
+        const file = fileInput.files[0];
+        const filePath = currentDossierPath + "/" + file.name;
+
+        let token = localStorage.getItem('github_pat');
+        if (!token) {
+            token = prompt("Veuillez entrer votre jeton d'accès GitHub (Personal Access Token) :");
+            if (token) {
+                localStorage.setItem('github_pat', token.trim());
+            } else {
+                alert("Envoi annulé : aucun jeton fourni.");
+                return;
+            }
+        }
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = async function () {
+            const base64Content = reader.result.split(',')[1];
+            const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${filePath}`;
+
+            try {
+                let sha = null;
+                const getRes = await fetch(apiUrl, {
+                    headers: { 'Authorization': `token ${token}` }
+                });
+                if (getRes.ok) {
+                    const fileInfo = await getRes.json();
+                    sha = fileInfo.sha;
+                }
+
+                const bodyData = {
+                    message: `Import direct du fichier : ${file.name} dans ${currentDossierPath}`,
+                    content: base64Content
+                };
+                if (sha) bodyData.sha = sha;
+
+                const putRes = await fetch(apiUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(bodyData)
+                });
+
+                if (putRes.ok) {
+                    alert(`✅ Succès ! Le fichier "${file.name}" a été ajouté.`);
+                    fileInput.value = ""; 
+                    chargerDossierGitHub(currentDossierPath, currentNomDossier); 
+                } else {
+                    const errData = await putRes.json();
+                    alert(`❌ Erreur d'envoi (${putRes.status}) : ${errData.message}`);
+                    if (putRes.status === 401) localStorage.removeItem('github_pat');
+                }
+            } catch (err) {
+                alert("❌ Erreur réseau : " + err.message);
+            }
+        };
     }
 </script>
 
