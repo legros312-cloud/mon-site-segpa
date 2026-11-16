@@ -398,6 +398,26 @@
         return;
       }
 
+      // --- SYNCHRONISATION DES CHAMPS DE SAISIE POUR GITHUB ---
+      document.querySelectorAll('input').forEach(input => {
+          if (input.type === 'checkbox' || input.type === 'radio') {
+              if (input.checked) input.setAttribute('checked', 'checked');
+              else input.removeAttribute('checked');
+          } else {
+              input.setAttribute('value', input.value);
+          }
+      });
+      document.querySelectorAll('textarea').forEach(textarea => {
+          textarea.textContent = textarea.value;
+      });
+      document.querySelectorAll('select').forEach(select => {
+          select.querySelectorAll('option').forEach(opt => {
+              if (opt.value === select.value) opt.setAttribute('selected', 'selected');
+              else opt.removeAttribute('selected');
+          });
+      });
+      // --------------------------------------------------------
+
       const cleanFileName = userFileName.replace(/[^a-zA-Z0-9_-]/g, "_") + ".html";
       const fullPath = "fiches_prep/" + cleanFileName;
 

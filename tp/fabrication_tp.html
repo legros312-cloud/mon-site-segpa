@@ -169,7 +169,6 @@
         .red-note-input {
             color: var(--accent-red); font-weight: 700; text-align: center; width: 80px !important; background-color: #fef2f2 !important;
         }
-        .img-preview { max-width: 140px; max-height: 100px; object-fit: contain; border: 1px solid #cbd5e1; margin-top: 6px; display: none; }
 
         @media print {
             body { background: white !important; padding: 0; }
@@ -386,6 +385,26 @@
             themeSelect.focus();
             return;
         }
+
+        // --- SYNCHRONISATION DES CHAMPS DE SAISIE POUR GITHUB ---
+        document.querySelectorAll('input').forEach(input => {
+            if (input.type === 'checkbox' || input.type === 'radio') {
+                if (input.checked) input.setAttribute('checked', 'checked');
+                else input.removeAttribute('checked');
+            } else {
+                input.setAttribute('value', input.value);
+            }
+        });
+        document.querySelectorAll('textarea').forEach(textarea => {
+            textarea.textContent = textarea.value;
+        });
+        document.querySelectorAll('select').forEach(select => {
+            select.querySelectorAll('option').forEach(opt => {
+                if (opt.value === select.value) opt.setAttribute('selected', 'selected');
+                else opt.removeAttribute('selected');
+            });
+        });
+        // --------------------------------------------------------
 
         const tpNum = document.getElementById('tpNumber').value.trim() || '1';
         const subject = document.getElementById('tpSubject').value.trim() || 'sans_titre';
