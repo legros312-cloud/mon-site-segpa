@@ -220,7 +220,7 @@
         <tr>
             <td colspan="2">
                 <label>Nom de l'élève</label> 
-                <input type="text" placeholder="Prénom Nom">
+                <input type="text" id="studentName" placeholder="Prénom Nom">
             </td>
             <td>
                 <label>Date</label> 
@@ -253,7 +253,7 @@
 
     <div class="section-box box-objectives">
         <div class="section-title">🎯 Objectifs & Consignes</div>
-        <textarea rows="3" placeholder="Objectifs..."></textarea>
+        <textarea id="tpObjectives" rows="3" placeholder="Objectifs..."></textarea>
     </div>
 
     <div class="section-box box-results">
@@ -386,7 +386,7 @@
             return;
         }
 
-        // --- SYNCHRONISATION DES CHAMPS DE SAISIE POUR GITHUB ---
+        // --- SYNCHRONISATION FORCÉE DE TOUS LES CHAMPS DYNAMIQUES ET STATIQUES ---
         document.querySelectorAll('input').forEach(input => {
             if (input.type === 'checkbox' || input.type === 'radio') {
                 if (input.checked) input.setAttribute('checked', 'checked');
@@ -395,16 +395,18 @@
                 input.setAttribute('value', input.value);
             }
         });
+        
         document.querySelectorAll('textarea').forEach(textarea => {
-            textarea.textContent = textarea.value;
+            textarea.innerHTML = textarea.value; // Force le contenu dans le HTML brut
         });
+
         document.querySelectorAll('select').forEach(select => {
             select.querySelectorAll('option').forEach(opt => {
                 if (opt.value === select.value) opt.setAttribute('selected', 'selected');
                 else opt.removeAttribute('selected');
             });
         });
-        // --------------------------------------------------------
+        // -----------------------------------------------------------------------
 
         const tpNum = document.getElementById('tpNumber').value.trim() || '1';
         const subject = document.getElementById('tpSubject').value.trim() || 'sans_titre';
@@ -453,7 +455,7 @@
             }
 
             const bodyData = {
-                message: `Ajout du TP ${fileName} dans ${folderPath}`,
+                message: `Ajout/Mise à jour du TP ${fileName} dans ${folderPath}`,
                 content: contentBase64
             };
             if (sha) bodyData.sha = sha;
